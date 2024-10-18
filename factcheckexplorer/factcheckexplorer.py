@@ -49,12 +49,16 @@ class FactCheckLib:
         if not data or not isinstance(data, list) or not data[0]:
             return []
         parsed_claims = []
-        tag_mapping = {tag[0]: tag[1] for tag in data[0][2]}
-        for claim in data[0][1]:
-            claim_details = self._parse_claim(claim, tag_mapping)
-            if claim_details:
-                parsed_claims.append(claim_details)
-        return parsed_claims
+        try:
+            tag_mapping = {tag[0]: tag[1] for tag in data[0][2]}
+            for claim in data[0][1]:
+                claim_details = self._parse_claim(claim, tag_mapping)
+                if claim_details:
+                    parsed_claims.append(claim_details)
+            return parsed_claims
+        except Exception as e:
+            print(f"Error extracting info. Error: {e}")
+            return []
 
     @staticmethod
     def _parse_claim(claim, tag_mapping):
